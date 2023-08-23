@@ -1,12 +1,13 @@
 import styled from "styled-components";
-
+import { connect } from "react-redux";
+import { signOutAPI } from "../actions";
 const Header = (props) => {
   return (
     <Container>
       <Content>
         <Logo>
           <a href="/home">
-            <img src="/images/CampusIN.png" width="95px" height="95px" alt="" />
+            <img src="/images/logo.png" width="95px" height="95px" alt="" />
           </a>
         </Logo>
         <Search>
@@ -29,20 +30,20 @@ const Header = (props) => {
             <NavList className="active">
               <a>
                 <img src="/images/buy.png" width="60px" height="30px" alt="" />
-                <span>Buy & Sell</span>
+                <span>AboutUS</span>
               </a>
             </NavList>
 
             <NavList className="active">
               <a>
-                <img src="/images/resources.png" width="40px" height="30px" alt="" />
-                <span>Resources</span>
+                <img src="/images/book.png" width="40px" height="30px" alt="" />
+                <span>Contact INFO</span>
               </a>
             </NavList>
 
             <NavList className="active">
               <a>
-                <img src="/images/nav-home.svg" alt="" />
+                <img src="/images/home.svg" alt="" />
                 <span></span>
               </a>
             </NavList>
@@ -55,12 +56,18 @@ const Header = (props) => {
 
             <User>
               <a>
-                <img src="https://raw.githubusercontent.com/CleverProgrammers/cp-linkedin-clone/f014d361d787029f15ea0f0f78c053d8c214f138/public/images/user.svg" alt="user photo" />
-                <span>User Name</span>
+                {props.user && props.user.photoURL ? (
+                <img src={props.user.photoURL} alt=""/>
+                ) : (
+                < img src="/images/user.png" alt="user photo" />
+                )}
+                <span>User Name
                 <img src="https://raw.githubusercontent.com/CleverProgrammers/cp-linkedin-clone/f014d361d787029f15ea0f0f78c053d8c214f138/public/images/down-icon.svg" alt="" />
+                </span>
+                
               </a>
 
-              <SignOut>
+              <SignOut onClick ={() => props.signOut()}>
                 <a>Sign Out</a>
               </SignOut>
             </User>
@@ -220,8 +227,8 @@ const User = styled(NavList)`
     border-radius: 50%;
   }
   a > img {
-    width: 24px;
-    height: 24px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
   }
   span {
@@ -237,6 +244,15 @@ const User = styled(NavList)`
   }
 `;
 
+const mapStateToProps = (state) => {
+ return {
+   user: state.userState.user,
+ };
+};
 
 
-export default Header;
+const mapDispatchToProps = (dispatch) => ({
+  signOut: () => dispatch(signOutAPI()),
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(Header);
