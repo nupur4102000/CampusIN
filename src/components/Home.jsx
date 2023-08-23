@@ -2,20 +2,16 @@ import styled from "styled-components";
 import Leftside from "./Leftside";
 import Main from "./Main";
 import Rightside from "./Rightside";
+import Header from "./Header";
+import { Navigate } from "react-router";
+import { connect } from "react-redux";
 
 const Home = (props) => {
   return (
     <Container>
-      <Section>
-        <h5>
-          <a>Hiring in a hurry? - </a>
-        </h5>
-        <p>
-          Find talented pros in record time with Upwork and keep business
-          moving.
-        </p>
-      </Section>
+      {!props.user && <Navigate to="/" />}
       <Layout>
+        <Header/>
         <Leftside />
         <Main />
         <Rightside />
@@ -35,31 +31,7 @@ const Content = styled.div`
   margin-right: auto;
 `;
 
-const Section = styled.section`
-  min-height: 50px;
-  padding: 16px 0;
-  box-sizing: content-box;
-  text-align: center;
-  text-decoration: underline;
-  display: flex;
-  justify-content: center;
-  h5 {
-    color: #0a66c2;
-    font-size: 14px;
-    a {
-      font-weight: 700;
-    }
-  }
-  p {
-    font-size: 14px;
-    color: #434649;
-    font-weight: 600;
-  }
-  @media (max-width: 768px) {
-    flex-direction: column;
-    padding: 0 5px;
-  }
-`;
+
 
 const Layout = styled.div`
   display: grid;
@@ -76,4 +48,10 @@ const Layout = styled.div`
   }
 `;
 
-export default Home;
+const mapStateToProps =(state) => {
+return {
+ user: state.userState.user,
+};
+};
+
+export default connect(mapStateToProps)(Home);
